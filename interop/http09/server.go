@@ -86,11 +86,11 @@ func (s *Server) ListenAndServe() error {
 		if err != nil {
 			return err
 		}
-		go s.handleConn(conn)
+		go s.HandleConn(conn)
 	}
 }
 
-func (s *Server) handleConn(conn quic.Connection) {
+func (s *Server) HandleConn(conn quic.Connection) {
 	for {
 		str, err := conn.AcceptStream(context.Background())
 		if err != nil {
@@ -98,14 +98,14 @@ func (s *Server) handleConn(conn quic.Connection) {
 			return
 		}
 		go func() {
-			if err := s.handleStream(str); err != nil {
+			if err := s.HandleStream(str); err != nil {
 				log.Printf("Handling stream failed: %s\n", err.Error())
 			}
 		}()
 	}
 }
 
-func (s *Server) handleStream(str quic.Stream) error {
+func (s *Server) HandleStream(str quic.Stream) error {
 	reqBytes, err := io.ReadAll(str)
 	if err != nil {
 		return err
