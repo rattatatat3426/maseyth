@@ -106,6 +106,10 @@ func (c *client) doRequest(req *http.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	return DoRequestOnStream(str, req)
+}
+
+func DoRequestOnStream(str io.ReadWriteCloser, req *http.Request) (*http.Response, error) {
 	cmd := "GET " + req.URL.Path + "\r\n"
 	if _, err := str.Write([]byte(cmd)); err != nil {
 		return nil, err
