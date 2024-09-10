@@ -104,6 +104,10 @@ type Transport struct {
 	// Tracer.Close is called when the transport is closed.
 	Tracer *logging.Tracer
 
+	// IsNonQuicPacket is a custom function that can be set to override the detection of
+	// non-QUIC packets. If not set, default DefaultIsNonQuicPacket handler is used
+	IsNonQuicPacket func(packet []byte) bool
+
 	handlerMap packetHandlerManager
 
 	mutex    sync.Mutex
@@ -133,6 +137,13 @@ type Transport struct {
 	nonQUICPackets        chan receivedPacket
 
 	logger utils.Logger
+}
+
+// DefaultIsNonQuicPacket is a simple detector which check is the given packet can be identified
+// as a QUIC packet or not. The current implementation is simple -- it checks the first byte of
+// the packet by calling !wire.IsPotentialQUICPacket(p.data[0]) && !wire.IsLongHeaderPacket(p.data[0])
+func DefaultIsNonQuicPacket(packet []byte) bool {
+	return !wire.IsPotentialQUICPacket(packet[0]) && !wire.IsLongHeaderPacket(packet[0])
 }
 
 // Listen starts listening for incoming QUIC connections.
@@ -394,10 +405,17 @@ func (t *Transport) handlePacket(p receivedPacket) {
 	if len(p.data) == 0 {
 		return
 	}
-	if !wire.IsPotentialQUICPacket(p.data[0]) && !wire.IsLongHeaderPacket(p.data[0]) {
+
+	packetDetector := DefaultIsNonQuicPacket
+	if t.IsNonQuicPacket != nil {
+		packetDetector = t.IsNonQuicPacket
+	}
+
+	if packetDetector(p.data) {
 		t.handleNonQUICPacket(p)
 		return
 	}
+
 	connID, err := wire.ParseConnectionID(p.data, t.connIDLen)
 	if err != nil {
 		t.logger.Debugf("error parsing connection ID on packet from %s: %s", p.remoteAddr, err)
