@@ -104,8 +104,8 @@ type Transport struct {
 	// Tracer.Close is called when the transport is closed.
 	Tracer *logging.Tracer
 
-	// IsNonQuicPacket is a custom function that can be set to override the detection of
-	// non-QUIC packets. If not set, default DefaultIsNonQuicPacket handler is used
+	// IsNonQUICPacket is a custom function that can be set to override the detection of
+	// non-QUIC packets. If not set, default DefaultIsNonQUICPacket handler is used
 	IsNonQUICPacket func(packet []byte) bool
 
 	handlerMap packetHandlerManager
