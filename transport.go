@@ -106,7 +106,7 @@ type Transport struct {
 
 	// IsNonQuicPacket is a custom function that can be set to override the detection of
 	// non-QUIC packets. If not set, default DefaultIsNonQuicPacket handler is used
-	IsNonQuicPacket func(packet []byte) bool
+	IsNonQUICPacket func(packet []byte) bool
 
 	handlerMap packetHandlerManager
 
