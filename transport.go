@@ -139,10 +139,10 @@ type Transport struct {
 	logger utils.Logger
 }
 
-// DefaultIsNonQuicPacket is a simple detector which check is the given packet can be identified
+// DefaultIsNonQUICPacket is a simple detector which check is the given packet can be identified
 // as a QUIC packet or not. The current implementation is simple -- it checks the first byte of
 // the packet by calling !wire.IsPotentialQUICPacket(p.data[0]) && !wire.IsLongHeaderPacket(p.data[0])
-func DefaultIsNonQuicPacket(packet []byte) bool {
+func DefaultIsNonQUICPacket(packet []byte) bool {
 	return !wire.IsPotentialQUICPacket(packet[0]) && !wire.IsLongHeaderPacket(packet[0])
 }
 
@@ -406,9 +406,9 @@ func (t *Transport) handlePacket(p receivedPacket) {
 		return
 	}
 
-	packetDetector := DefaultIsNonQuicPacket
-	if t.IsNonQuicPacket != nil {
-		packetDetector = t.IsNonQuicPacket
+	packetDetector := DefaultIsNonQUICPacket
+	if t.IsNonQUICPacket != nil {
+		packetDetector = t.IsNonQUICPacket
 	}
 
 	if packetDetector(p.data) {
