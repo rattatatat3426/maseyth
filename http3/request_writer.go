@@ -199,16 +199,19 @@ func (w *requestWriter) encodeHeaders(req *http.Request, addGzipHeader bool, tra
 	// }
 
 	// trace := httptrace.ContextClientTrace(req.Context())
-	// traceHeaders := traceHasWroteHeaderField(trace)
+
+	type hdrVal struct{ name, value string }
+
+	var hdrVals []hdrVal
 
 	// Header list size is ok. Write the headers.
 	enumerateHeaders(func(name, value string) {
 		name = strings.ToLower(name)
 		w.encoder.WriteField(qpack.HeaderField{Name: name, Value: value})
-		// if traceHeaders {
-		// 	traceWroteHeaderField(trace, name, value)
-		// }
+		hdrVals = append(hdrVals, hdrVal{name, value})
 	})
+
+	fmt.Printf("headers: %v\n", hdrVals)
 
 	return nil
 }
