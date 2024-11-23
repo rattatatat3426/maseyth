@@ -7,10 +7,10 @@ import (
 	"net"
 	"time"
 
-	mocklogging "github.com/quic-go/quic-go/internal/mocks/logging"
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/utils"
-	"github.com/quic-go/quic-go/logging"
+	mocklogging "github.com/rattatatat3426/maseyth/internal/mocks/logging"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
+	"github.com/rattatatat3426/maseyth/internal/utils"
+	"github.com/rattatatat3426/maseyth/logging"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

@@ -5,8 +5,8 @@ package mocklogging
 import (
 	"net"
 
-	"github.com/quic-go/quic-go/internal/mocks/logging/internal"
-	"github.com/quic-go/quic-go/logging"
+	"github.com/rattatatat3426/maseyth/internal/mocks/logging/internal"
+	"github.com/rattatatat3426/maseyth/logging"
 
 	"go.uber.org/mock/gomock"
 )

@@ -10,12 +10,12 @@ import (
 	"net"
 	"sync"
 
-	"github.com/quic-go/quic-go"
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/utils"
-	"github.com/quic-go/quic-go/logging"
-	"github.com/quic-go/quic-go/metrics"
-	"github.com/quic-go/quic-go/qlog"
+	"github.com/rattatatat3426/maseyth"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
+	"github.com/rattatatat3426/maseyth/internal/utils"
+	"github.com/rattatatat3426/maseyth/logging"
+	"github.com/rattatatat3426/maseyth/metrics"
+	"github.com/rattatatat3426/maseyth/qlog"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

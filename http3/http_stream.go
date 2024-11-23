@@ -7,8 +7,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/quic-go/quic-go"
-	"github.com/quic-go/quic-go/internal/protocol"
+	"github.com/rattatatat3426/maseyth"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
 
 	"github.com/quic-go/qpack"
 )

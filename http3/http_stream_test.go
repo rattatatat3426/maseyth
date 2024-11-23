@@ -7,9 +7,9 @@ import (
 	"math"
 	"net/http"
 
-	mockquic "github.com/quic-go/quic-go/internal/mocks/quic"
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/qerr"
+	mockquic "github.com/rattatatat3426/maseyth/internal/mocks/quic"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
+	"github.com/rattatatat3426/maseyth/internal/qerr"
 
 	"github.com/quic-go/qpack"
 

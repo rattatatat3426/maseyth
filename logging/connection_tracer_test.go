@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	mocklogging "github.com/quic-go/quic-go/internal/mocks/logging"
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/wire"
-	"github.com/quic-go/quic-go/logging"
+	mocklogging "github.com/rattatatat3426/maseyth/internal/mocks/logging"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
+	"github.com/rattatatat3426/maseyth/internal/wire"
+	"github.com/rattatatat3426/maseyth/logging"
 
 	"go.uber.org/mock/gomock"
 )

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/quic-go/quic-go"
+	"github.com/rattatatat3426/maseyth"
 )
 
 // Error is returned from the round tripper (for HTTP clients)

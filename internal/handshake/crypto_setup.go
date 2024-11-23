@@ -10,13 +10,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/quic-go/quic-go/internal/protocol"
-	"github.com/quic-go/quic-go/internal/qerr"
-	"github.com/quic-go/quic-go/internal/qtls"
-	"github.com/quic-go/quic-go/internal/utils"
-	"github.com/quic-go/quic-go/internal/wire"
-	"github.com/quic-go/quic-go/logging"
-	"github.com/quic-go/quic-go/quicvarint"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
+	"github.com/rattatatat3426/maseyth/internal/qerr"
+	"github.com/rattatatat3426/maseyth/internal/qtls"
+	"github.com/rattatatat3426/maseyth/internal/utils"
+	"github.com/rattatatat3426/maseyth/internal/wire"
+	"github.com/rattatatat3426/maseyth/logging"
+	"github.com/rattatatat3426/maseyth/quicvarint"
 )
 
 type quicVersionContextKey struct{}
@@ -230,7 +230,7 @@ func (h *cryptoSetup) handleMessage(data []byte, encLevel protocol.EncryptionLev
 
 func (h *cryptoSetup) handleEvent(ev tls.QUICEvent) (done bool, err error) {
 	//nolint:exhaustive
-	// Go 1.23 added new 0-RTT events, see https://github.com/quic-go/quic-go/issues/4272.
+	// Go 1.23 added new 0-RTT events, see https://github.com/rattatatat3426/maseyth/issues/4272.
 	// We will start using these events when dropping support for Go 1.22.
 	switch ev.Kind {
 	case tls.QUICNoEvent:

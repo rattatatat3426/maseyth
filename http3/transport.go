@@ -15,8 +15,8 @@ import (
 
 	"golang.org/x/net/http/httpguts"
 
-	"github.com/quic-go/quic-go"
-	"github.com/quic-go/quic-go/internal/protocol"
+	"github.com/rattatatat3426/maseyth"
+	"github.com/rattatatat3426/maseyth/internal/protocol"
 )
 
 // Settings are HTTP/3 settings that apply to the underlying connection.
