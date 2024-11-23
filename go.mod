@@ -1,6 +1,6 @@
 module github.com/rattatatat3426/maseyth
 
-go 1.22
+go 1.23
 
 require (
 	github.com/francoispqt/gojay v1.2.13
