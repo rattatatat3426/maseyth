@@ -14,17 +14,23 @@ type Sender = sender
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_stream_internal_test.go github.com/rattatatat3426/maseyth StreamI"
 type StreamI = streamI
 
+//go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_crypto_stream_test.go github.com/rattatatat3426/maseyth CryptoStream"
+type CryptoStream = cryptoStream
+
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_receive_stream_internal_test.go github.com/rattatatat3426/maseyth ReceiveStreamI"
 type ReceiveStreamI = receiveStreamI
 
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_send_stream_internal_test.go github.com/rattatatat3426/maseyth SendStreamI"
 type SendStreamI = sendStreamI
 
+//go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_stream_getter_test.go github.com/rattatatat3426/maseyth StreamGetter"
+type StreamGetter = streamGetter
+
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_stream_sender_test.go github.com/rattatatat3426/maseyth StreamSender"
 type StreamSender = streamSender
 
-//go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_stream_control_frame_getter_test.go github.com/rattatatat3426/maseyth StreamControlFrameGetter"
-type StreamControlFrameGetter = streamControlFrameGetter
+//go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_crypto_data_handler_test.go github.com/rattatatat3426/maseyth CryptoDataHandler"
+type CryptoDataHandler = cryptoDataHandler
 
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -build_flags=\"-tags=gomock\" -package quic -self_package github.com/rattatatat3426/maseyth -destination mock_frame_source_test.go github.com/rattatatat3426/maseyth FrameSource"
 type FrameSource = frameSource
@@ -66,4 +72,5 @@ type PacketHandlerManager = packetHandlerManager
 //
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -package quic -self_package github.com/rattatatat3426/maseyth -source sys_conn_oob.go -destination mock_batch_conn_test.go -mock_names batchConn=MockBatchConn"
 
+//go:generate sh -c "go run go.uber.org/mock/mockgen -typed -package quic -self_package github.com/rattatatat3426/maseyth -self_package github.com/rattatatat3426/maseyth -destination mock_token_store_test.go github.com/rattatatat3426/maseyth TokenStore"
 //go:generate sh -c "go run go.uber.org/mock/mockgen -typed -package quic -self_package github.com/rattatatat3426/maseyth -self_package github.com/rattatatat3426/maseyth -destination mock_packetconn_test.go net PacketConn"

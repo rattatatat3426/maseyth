@@ -46,6 +46,7 @@ type fakeClosingListener struct {
 }
 
 func (ln *fakeClosingListener) Accept(ctx context.Context) (quic.EarlyConnection, error) {
+	Expect(ctx).To(Equal(context.Background()))
 	return ln.listenerWrapper.Accept(ln.ctx)
 }
 
@@ -64,7 +65,7 @@ var _ = Describe("HTTP3 Server hotswap test", func() {
 		mux1    *http.ServeMux
 		mux2    *http.ServeMux
 		client  *http.Client
-		rt      *http3.Transport
+		rt      *http3.RoundTripper
 		server1 *http3.Server
 		server2 *http3.Server
 		ln      *listenerWrapper
@@ -86,11 +87,11 @@ var _ = Describe("HTTP3 Server hotswap test", func() {
 
 		server1 = &http3.Server{
 			Handler:    mux1,
-			QUICConfig: getQuicConfig(nil),
+			QuicConfig: getQuicConfig(nil),
 		}
 		server2 = &http3.Server{
 			Handler:    mux2,
-			QUICConfig: getQuicConfig(nil),
+			QuicConfig: getQuicConfig(nil),
 		}
 
 		tlsConf := http3.ConfigureTLSConfig(getTLSConfig())
@@ -106,10 +107,10 @@ var _ = Describe("HTTP3 Server hotswap test", func() {
 	})
 
 	BeforeEach(func() {
-		rt = &http3.Transport{
+		rt = &http3.RoundTripper{
 			TLSClientConfig:    getTLSClientConfig(),
 			DisableCompression: true,
-			QUICConfig:         getQuicConfig(&quic.Config{MaxIdleTimeout: 10 * time.Second}),
+			QuicConfig:         getQuicConfig(&quic.Config{MaxIdleTimeout: 10 * time.Second}),
 		}
 		client = &http.Client{Transport: rt}
 	})
@@ -151,7 +152,7 @@ var _ = Describe("HTTP3 Server hotswap test", func() {
 		Expect(fake1.closed.Load()).To(BeTrue())
 		Expect(fake2.closed.Load()).To(BeFalse())
 		Expect(ln.listenerClosed).ToNot(BeTrue())
-		Expect(client.Transport.(*http3.Transport).Close()).NotTo(HaveOccurred())
+		Expect(client.Transport.(*http3.RoundTripper).Close()).NotTo(HaveOccurred())
 
 		// verify that new connections are being initiated from the second server now
 		resp, err = client.Get("https://localhost:" + port + "/hello2")

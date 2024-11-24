@@ -3,8 +3,8 @@ package quic
 import (
 	"math/bits"
 	"net"
-	"sync/atomic"
 
+	"github.com/rattatatat3426/maseyth/internal/protocol"
 	"github.com/rattatatat3426/maseyth/internal/utils"
 )
 
@@ -12,8 +12,9 @@ import (
 // When receiving packets for such a connection, we need to retransmit the packet containing the CONNECTION_CLOSE frame,
 // with an exponential backoff.
 type closedLocalConn struct {
-	counter atomic.Uint32
-	logger  utils.Logger
+	counter     uint32
+	perspective protocol.Perspective
+	logger      utils.Logger
 
 	sendPacket func(net.Addr, packetInfo)
 }
@@ -21,38 +22,43 @@ type closedLocalConn struct {
 var _ packetHandler = &closedLocalConn{}
 
 // newClosedLocalConn creates a new closedLocalConn and runs it.
-func newClosedLocalConn(sendPacket func(net.Addr, packetInfo), logger utils.Logger) packetHandler {
+func newClosedLocalConn(sendPacket func(net.Addr, packetInfo), pers protocol.Perspective, logger utils.Logger) packetHandler {
 	return &closedLocalConn{
-		sendPacket: sendPacket,
-		logger:     logger,
+		sendPacket:  sendPacket,
+		perspective: pers,
+		logger:      logger,
 	}
 }
 
 func (c *closedLocalConn) handlePacket(p receivedPacket) {
-	n := c.counter.Add(1)
+	c.counter++
 	// exponential backoff
 	// only send a CONNECTION_CLOSE for the 1st, 2nd, 4th, 8th, 16th, ... packet arriving
-	if bits.OnesCount32(n) != 1 {
+	if bits.OnesCount32(c.counter) != 1 {
 		return
 	}
-	c.logger.Debugf("Received %d packets after sending CONNECTION_CLOSE. Retransmitting.", n)
+	c.logger.Debugf("Received %d packets after sending CONNECTION_CLOSE. Retransmitting.", c.counter)
 	c.sendPacket(p.remoteAddr, p.info)
 }
 
-func (c *closedLocalConn) destroy(error)                              {}
-func (c *closedLocalConn) closeWithTransportError(TransportErrorCode) {}
+func (c *closedLocalConn) shutdown()                            {}
+func (c *closedLocalConn) destroy(error)                        {}
+func (c *closedLocalConn) getPerspective() protocol.Perspective { return c.perspective }
 
 // A closedRemoteConn is a connection that was closed remotely.
 // For such a connection, we might receive reordered packets that were sent before the CONNECTION_CLOSE.
 // We can just ignore those packets.
-type closedRemoteConn struct{}
+type closedRemoteConn struct {
+	perspective protocol.Perspective
+}
 
 var _ packetHandler = &closedRemoteConn{}
 
-func newClosedRemoteConn() packetHandler {
-	return &closedRemoteConn{}
+func newClosedRemoteConn(pers protocol.Perspective) packetHandler {
+	return &closedRemoteConn{perspective: pers}
 }
 
-func (c *closedRemoteConn) handlePacket(receivedPacket)                {}
-func (c *closedRemoteConn) destroy(error)                              {}
-func (c *closedRemoteConn) closeWithTransportError(TransportErrorCode) {}
+func (s *closedRemoteConn) handlePacket(receivedPacket)          {}
+func (s *closedRemoteConn) shutdown()                            {}
+func (s *closedRemoteConn) destroy(error)                        {}
+func (s *closedRemoteConn) getPerspective() protocol.Perspective { return s.perspective }
